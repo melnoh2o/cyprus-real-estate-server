@@ -95,6 +95,33 @@ export const getMinMax = async (req: Request, res: Response) => {
   }
 };
 
+export const getValues = async (req: Request, res: Response) => {
+  try {
+    const realEstates = await prisma.realEstate.findMany();
+
+    const developers = [...new Set(realEstates.map((realEstate) => realEstate.developer))]
+      .map((item, index) => ({ id: index + 1, name: item, value: item }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    const locations = [...new Set(realEstates.map((realEstate) => realEstate.location))]
+      .map((item, index) => ({ id: index + 1, name: item, value: item }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    const handovers = [...new Set(realEstates.map((realEstate) => realEstate.handover))]
+      .map((item, index) => ({ id: index + 1, name: item, value: item }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    res.json({
+      developers,
+      locations,
+      handovers,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: 'Can`t get real estate min and max values!',
+      error,
+    });
+  }
+};
+
 export const create = async (req: Request, res: Response) => {
   try {
     const newRealEstate = await prisma.realEstate.create({
