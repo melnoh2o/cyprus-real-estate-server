@@ -2,9 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-import realEstateRouters from './src/routes/real-estate';
-import developerRouters from './src/routes/developer';
-import mailRouters from './src/routes/mail';
+import realEstateRouters from './src/routes/realEstate.js';
+import developerRouters from './src/routes/developer.js';
+import mailRouters from './src/routes/mail.js';
 
 dotenv.config();
 

@@ -1,14 +1,14 @@
 import express from 'express';
 
 import {
-  create,
   createMany,
+  create,
   deleteAll,
   deleteById,
   getAll,
   getMinMax,
   getValues,
-} from '../../controllers/real-estate';
+} from '../controllers/realEstate.js';
 
 const router = express.Router();
 

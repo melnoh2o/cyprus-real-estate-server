@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { letterToUs, sentMail } from '../../controllers/mail';
+import { letterToUs, sentMail } from '../controllers/mail.js';
 
 const router = express.Router();
 
