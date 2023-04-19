@@ -1,46 +1,29 @@
-import { Request, Response } from 'express';
-
 import prisma from '../../config/prisma';
 
 const PER_PAGE = 6;
 
-interface Options {
-  take: number;
-  skip: number;
-  where?: any;
-  orderBy?: any;
-}
-
-interface CountOptions {
-  where?: any;
-  orderBy?: any;
-}
-
-export const getAll = async (req: Request, res: Response) => {
+export const getAll = async (req, res) => {
   try {
     const { developer, location, handover, page, initialPrice, finalPrice } = req.query;
 
     const currentPage = Math.max(Number(page || 1), 1);
 
-    const options: Options = {
-      take: PER_PAGE as number,
-      skip: ((currentPage - 1) * PER_PAGE) as number,
+    const options = {
+      take: PER_PAGE,
+      skip: (currentPage - 1) * PER_PAGE,
     };
-    const countOptions: CountOptions = {};
+    const countOptions = {};
     const allData = await prisma.realEstate.findMany();
 
-    const initial: number = initialPrice ? parseInt(initialPrice as string) : 0;
-    const final: number = finalPrice
-      ? parseInt(finalPrice as string)
-      : Math.max.apply(
-          null,
-          allData.map<number>((realEstate) => realEstate.price)
-        );
+    const initial = initialPrice ? parseInt(initialPrice) : 0;
+    const final = finalPrice
+      ? parseInt(finalPrice)
+      : Math.max.apply(null, allData.map < number > ((realEstate) => realEstate.price));
 
     options.where = {
-      developer: { in: developer as string },
-      location: { in: location as string },
-      handover: { in: handover as string },
+      developer: { in: developer },
+      location: { in: location },
+      handover: { in: handover },
       price: {
         gte: initial,
         lte: final,
@@ -72,11 +55,11 @@ export const getAll = async (req: Request, res: Response) => {
   }
 };
 
-export const getMinMax = async (req: Request, res: Response) => {
+export const getMinMax = async (req, res) => {
   try {
     const realEstates = await prisma.realEstate.findMany();
 
-    const onlyPrices = realEstates.map<number>((realEstate) => realEstate.price);
+    const onlyPrices = realEstates.map < number > ((realEstate) => realEstate.price);
 
     const max = function () {
       return Math.max.apply(null, onlyPrices);
@@ -95,7 +78,7 @@ export const getMinMax = async (req: Request, res: Response) => {
   }
 };
 
-export const getValues = async (req: Request, res: Response) => {
+export const getValues = async (req, res) => {
   try {
     const realEstates = await prisma.realEstate.findMany();
 
@@ -122,7 +105,7 @@ export const getValues = async (req: Request, res: Response) => {
   }
 };
 
-export const create = async (req: Request, res: Response) => {
+export const create = async (req, res) => {
   try {
     const newRealEstate = await prisma.realEstate.create({
       data: req.body,
@@ -137,12 +120,12 @@ export const create = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteById = async (req: Request, res: Response) => {
+export const deleteById = async (req, res) => {
   try {
     const { id } = req.body;
     const deletedRealEstate = await prisma.realEstate.delete({
       where: {
-        id: id as string,
+        id: id,
       },
     });
 
@@ -155,7 +138,7 @@ export const deleteById = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteAll = async (req: Request, res: Response) => {
+export const deleteAll = async (req, res) => {
   try {
     await prisma.realEstate.deleteMany({});
 
@@ -168,7 +151,7 @@ export const deleteAll = async (req: Request, res: Response) => {
   }
 };
 
-export const createMany = async (req: Request, res: Response) => {
+export const createMany = async (req, res) => {
   try {
     const newRealEstates = await prisma.realEstate.createMany({
       data: req.body,

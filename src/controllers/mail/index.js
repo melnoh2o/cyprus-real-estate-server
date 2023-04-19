@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer';
-import { Request, Response } from 'express';
 
-export const sentMail = async (req: Request, res: Response) => {
+export const sentMail = async (req, res) => {
   try {
     const { name, phone } = req.body;
     let transporter = nodemailer.createTransport({
@@ -14,7 +13,7 @@ export const sentMail = async (req: Request, res: Response) => {
         pass: process.env.MAIL_PASSWORD,
       },
       logger: true,
-    } as any);
+    });
 
     const response = await transporter.sendMail({
       from: `${name}`,
@@ -30,7 +29,7 @@ export const sentMail = async (req: Request, res: Response) => {
   }
 };
 
-export const letterToUs = async (req: Request, res: Response) => {
+export const letterToUs = async (req, res) => {
   try {
     const { mail, name, theme, description } = req.body;
     let transporter = nodemailer.createTransport({
@@ -43,7 +42,7 @@ export const letterToUs = async (req: Request, res: Response) => {
         pass: process.env.MAIL_PASSWORD,
       },
       logger: true,
-    } as any);
+    });
 
     const response = await transporter.sendMail({
       from: `${name}`,

@@ -1,8 +1,6 @@
-import { Request, Response } from 'express';
-
 import prisma from '../../config/prisma';
 
-export const create = async (req: Request, res: Response) => {
+export const create = async (req, res) => {
   try {
     const newDeveloper = await prisma.developer.create({
       data: req.body,
@@ -17,7 +15,7 @@ export const create = async (req: Request, res: Response) => {
   }
 };
 
-export const getAll = async (req: Request, res: Response) => {
+export const getAll = async (req, res) => {
   try {
     const developers = await prisma.developer.findMany();
 
