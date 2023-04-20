@@ -1,4 +1,4 @@
-import prisma from '../config/prisma.js';
+import prisma from '../../config/prisma.js';
 
 const PER_PAGE = 6;
 
@@ -18,7 +18,10 @@ export const getAll = async (req, res) => {
     const initial = initialPrice ? parseInt(initialPrice) : 0;
     const final = finalPrice
       ? parseInt(finalPrice)
-      : Math.max.apply(null, allData.map < number > ((realEstate) => realEstate.price));
+      : Math.max.apply(
+          null,
+          allData.map((realEstate) => realEstate.price)
+        );
 
     options.where = {
       developer: { in: developer },
@@ -59,7 +62,7 @@ export const getMinMax = async (req, res) => {
   try {
     const realEstates = await prisma.realEstate.findMany();
 
-    const onlyPrices = realEstates.map < number > ((realEstate) => realEstate.price);
+    const onlyPrices = realEstates.map((realEstate) => realEstate.price);
 
     const max = function () {
       return Math.max.apply(null, onlyPrices);
