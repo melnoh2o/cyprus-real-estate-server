@@ -11,19 +11,41 @@ datasource db {
 }
 
 model RealEstate {
-  id          String   @id @default(uuid())
-  name        String
-  quantity    String?
-  image       String
-  link        String
-  developer   String
-  location    String
-  handover    String
-  price       Int
-  description String
-  isSell      Boolean?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                Int                @id @default(autoincrement())
+  name              String
+  quantity          String?
+  image             String
+  developer         String
+  location          String
+  handover          String
+  price             Int
+  isSell            Boolean?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  images            Images[]
+  priceDescriptions PriceDescription[]
+  descriptions      Description[]
+}
+
+model Images {
+  id           Int         @id @default(autoincrement())
+  thumbUrl     String
+  realEstate   RealEstate? @relation(fields: [realEstateId], references: [id])
+  realEstateId Int?
+}
+
+model PriceDescription {
+  id           Int         @id @default(autoincrement())
+  descriprion  String
+  realEstate   RealEstate? @relation(fields: [realEstateId], references: [id])
+  realEstateId Int?
+}
+
+model Description {
+  id           Int         @id @default(autoincrement())
+  descriprion  String
+  realEstate   RealEstate? @relation(fields: [realEstateId], references: [id])
+  realEstateId Int?
 }
 
 model developer {

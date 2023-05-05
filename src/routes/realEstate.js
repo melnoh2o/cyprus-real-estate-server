@@ -8,6 +8,7 @@ import {
   getAll,
   getMinMax,
   getValues,
+  getById,
 } from '../controllers/realEstate.js';
 
 const router = express.Router();
@@ -19,5 +20,6 @@ router.post('/create', create);
 router.post('/create-many', createMany);
 router.delete('/delete', deleteById);
 router.delete('/delete-all', deleteAll);
+router.get('/get-by-id/:id', getById);
 
 export default router;

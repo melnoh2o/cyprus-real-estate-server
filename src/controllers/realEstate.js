@@ -110,14 +110,56 @@ export const getValues = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
+    const {
+      name,
+      quantity,
+      image,
+      developer,
+      location,
+      handover,
+      price,
+      isSell,
+      images,
+      priceDescriptions,
+      descriptions,
+    } = req.body;
     const newRealEstate = await prisma.realEstate.create({
-      data: req.body,
+      data: {
+        name,
+        quantity,
+        image,
+        developer,
+        location,
+        handover,
+        price,
+        isSell,
+        images: {
+          createMany: {
+            data: images,
+          },
+        },
+        priceDescriptions: {
+          createMany: {
+            data: priceDescriptions,
+          },
+        },
+        descriptions: {
+          createMany: {
+            data: descriptions,
+          },
+        },
+      },
+      include: {
+        images: true,
+        priceDescriptions: true,
+        descriptions: true,
+      },
     });
 
     res.json({ data: newRealEstate });
   } catch (error) {
     res.status(404).json({
-      message: 'Can`t create real estate!',
+      message: `Can\`t create real estate! ${error}`,
       error,
     });
   }
@@ -165,6 +207,30 @@ export const createMany = async (req, res) => {
   } catch (error) {
     res.status(404).json({
       message: 'Can`t create many real estate!',
+      error,
+    });
+  }
+};
+
+export const getById = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const realEstate = await prisma.realEstate.findUnique({
+      where: {
+        id: Number(id),
+      },
+      include: {
+        priceDescriptions: true,
+        descriptions: true,
+        images: true,
+      },
+    });
+
+    res.json({ data: realEstate });
+  } catch (error) {
+    res.status(404).json({
+      message: 'Can`t get real estate!',
       error,
     });
   }
