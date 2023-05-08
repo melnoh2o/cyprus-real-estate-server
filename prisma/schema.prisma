@@ -11,20 +11,20 @@ datasource db {
 }
 
 model RealEstate {
-  id                Int                @id @default(autoincrement())
-  name              String
-  quantity          String?
-  image             String
-  developer         String
-  location          String
-  handover          String
-  price             Int
-  isSell            Boolean?
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  images            Images[]
-  priceDescriptions PriceDescription[]
-  descriptions      Description[]
+  id           Int           @id @default(autoincrement())
+  name         String
+  quantity     String?
+  image        String
+  developer    String
+  location     String
+  handover     String
+  price        Int
+  isSell       Boolean?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  images       Images[]
+  prices       Prices[]
+  descriptions Description[]
 }
 
 model Images {
@@ -34,40 +34,36 @@ model Images {
   realEstateId Int?
 }
 
-model PriceDescription {
+model Prices {
   id           Int         @id @default(autoincrement())
-  descriprion  String
+  price        String
+  description  String
   realEstate   RealEstate? @relation(fields: [realEstateId], references: [id])
   realEstateId Int?
 }
 
 model Description {
   id           Int         @id @default(autoincrement())
-  descriprion  String
+  description  String
   realEstate   RealEstate? @relation(fields: [realEstateId], references: [id])
   realEstateId Int?
 }
 
-model developer {
-  id        String   @id @default(uuid())
-  name      String
-  isArchive Boolean?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Location {
+  id          Int              @id @default(autoincrement())
+  location    String
+  area        String
+  isArchive   Boolean?
+  thumbUrl    String
+  description String
+  images      LocationImages[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 }
 
-model location {
-  id        String   @id @default(uuid())
-  name      String
-  isArchive Boolean?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model handover {
-  id        String   @id @default(uuid())
-  name      String
-  isArchive Boolean?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model LocationImages {
+  id         Int       @id @default(autoincrement())
+  thumbUrl   String
+  location   Location? @relation(fields: [locationId], references: [id])
+  locationId Int?
 }

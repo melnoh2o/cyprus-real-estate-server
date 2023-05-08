@@ -31,7 +31,7 @@ export const sentMail = async (req, res) => {
 
 export const letterToUs = async (req, res) => {
   try {
-    const { mail, name, theme, description } = req.body;
+    const { mail, name, phone, message } = req.body;
     let transporter = nodemailer.createTransport({
       host: process.env.MAIL_HOST,
       port: process.env.MAIL_PORT,
@@ -51,8 +51,8 @@ export const letterToUs = async (req, res) => {
       text: `Новая почта - ${mail}`,
       html: `
           <h3>Новое письмо</h3>
-          <h4>Тема ${theme}:</h4>
-          <p>Описание: ${description}</p>
+          <p>Описание: ${message}</p>
+          <p>Телефон номер нового подьзователя - ${phone}:</p>
           <p>Почто нового подьзователя - ${mail}</p>
       `,
     });

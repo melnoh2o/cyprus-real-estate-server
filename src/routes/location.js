@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { create, getAll } from '../controllers/developer.js';
+import { create, getAll } from '../controllers/location.js';
 
 const router = express.Router();
 

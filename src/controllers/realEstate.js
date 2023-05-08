@@ -120,7 +120,7 @@ export const create = async (req, res) => {
       price,
       isSell,
       images,
-      priceDescriptions,
+      prices,
       descriptions,
     } = req.body;
     const newRealEstate = await prisma.realEstate.create({
@@ -138,9 +138,9 @@ export const create = async (req, res) => {
             data: images,
           },
         },
-        priceDescriptions: {
+        prices: {
           createMany: {
-            data: priceDescriptions,
+            data: prices,
           },
         },
         descriptions: {
@@ -151,7 +151,7 @@ export const create = async (req, res) => {
       },
       include: {
         images: true,
-        priceDescriptions: true,
+        prices: true,
         descriptions: true,
       },
     });
@@ -221,13 +221,65 @@ export const getById = async (req, res) => {
         id: Number(id),
       },
       include: {
-        priceDescriptions: true,
+        prices: true,
         descriptions: true,
         images: true,
       },
     });
 
     res.json({ data: realEstate });
+  } catch (error) {
+    res.status(404).json({
+      message: 'Can`t get real estate!',
+      error,
+    });
+  }
+};
+
+export const getByDeveloper = async (req, res) => {
+  try {
+    const { developer } = req.query;
+
+    const realEstates = await prisma.realEstate.findMany({
+      where: {
+        developer: {
+          equals: String(developer),
+        },
+      },
+      orderBy: {
+        price: 'asc',
+      },
+    });
+
+    res.json({
+      data: realEstates,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: 'Can`t get real estate!',
+      error,
+    });
+  }
+};
+
+export const getByLocation = async (req, res) => {
+  try {
+    const { location } = req.query;
+
+    const realEstates = await prisma.realEstate.findMany({
+      where: {
+        location: {
+          equals: String(location),
+        },
+      },
+      orderBy: {
+        price: 'asc',
+      },
+    });
+
+    res.json({
+      data: realEstates,
+    });
   } catch (error) {
     res.status(404).json({
       message: 'Can`t get real estate!',
